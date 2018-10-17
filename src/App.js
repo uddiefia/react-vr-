@@ -12,18 +12,41 @@ import Primitives from './Primitives';
 import Penholder from './Penholder';
 
 export default class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
+      background:'background.jpeg',
+      sound:'office.wav',
+      visible:true,
+    };
+  }
+  changeScene(){
+    // console.log("clicked");
+    this.setState({
+      background:'outside.jpeg',
+      sound:'birds.wav',
+      visible:false
+    });
+
+  }
+  renderItem(){
+    if(this.state.visible===true){
+      return <Penholder/>
+    }
+  }
   render() {
     return (
       <View>
           <AmbientLight intensity={2.5}/>
-        <Pano source={asset('background.jpeg')}/>
+        <Pano source={asset(this.state.background)}/>
         <Sound 
         loop={true}
         volume={0.7}
         source={{
-        wav:asset('office.wav')
+        wav:asset(this.state.sound)
         }}
         />
+        <VrButton onClick={this.changeScene.bind(this)}>
         <Text
           style={{
             backgroundColor: '#777879',
@@ -38,7 +61,8 @@ export default class App extends React.Component {
           }}>
             My Office
         </Text>
-        <Penholder/>
+        </VrButton>
+        {this.renderItem()}
         {/* <Primitives/> */}
       </View>
     );
